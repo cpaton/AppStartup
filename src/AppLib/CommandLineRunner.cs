@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using AppLib.Host;
+using CommandLine;
 
 namespace AppLib
 {
@@ -15,7 +18,30 @@ namespace AppLib
         {
             var consoleHost = new ConsoleHost();
 
-            var commandLine = Activator.CreateInstance(commandLineBinding.CommandLineType);
+            object commandLine = null;
+
+            var stringBuilder = new StringBuilder();
+            using (var writer = new StringWriter(stringBuilder))
+            using (var parser = new Parser(x =>
+                                {
+                                    x.IgnoreUnknownArguments = true;
+                                    x.HelpWriter = writer;
+                                }))
+            {
+                var parserResult = parser.ParseArguments(args, commandLineBinding.CommandLineType);
+
+                if (parserResult.Tag != ParserResultType.Parsed)
+                {
+                    Console.WriteLine(stringBuilder.ToString());
+                    return -1;
+                }
+
+                parserResult.WithParsed(parsedCommandLine =>
+                {
+                    commandLine = parsedCommandLine;
+                });
+            }
+
             var applicationBootstrapper = commandLineBinding.CreateBootstrapper(commandLine);
             var application = applicationBootstrapper.Bootstrap();
 
