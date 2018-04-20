@@ -9,7 +9,7 @@ namespace SampleHost.Core
     {
         static async Task<int> Main(string[] args)
         {
-            return await CommandLineRunner.Run<RedSampleApp>(args);
+            return await CommandLineRunner.Run<RedSampleAppCommandLineBinding>(args);
         }
     }
 }
