@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AppLib;
+using AppLib.Initialisation;
 
 namespace SampleApp.Red
 {
@@ -14,9 +15,25 @@ namespace SampleApp.Red
             _configuration = configuration;
         }
 
-        public Task Start()
+        public Task Start(InitialisationInformation initialisationInformation)
         {
             Console.WriteLine("Starting");
+            foreach (var initialisationInformationMessage in initialisationInformation.Messages)
+            {
+                switch (initialisationInformationMessage.Type)
+                {
+                    case MessageType.Error:
+                        var foregroundColor = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(initialisationInformationMessage.Message);
+                        Console.ForegroundColor = foregroundColor;
+                        break;
+                    default:
+                        Console.WriteLine(initialisationInformationMessage.Message);
+                        break;
+
+                }
+            }
             ThreadPool.QueueUserWorkItem(_ => Console.WriteLine(_configuration.Name));
             return Task.CompletedTask;
         }

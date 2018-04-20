@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AppLib.Initialisation;
 
 namespace AppLib
 {
@@ -7,10 +8,11 @@ namespace AppLib
         /// <summary>
         /// Called to start and initialise the application
         /// </summary>
+        /// <param name="initialisationInformation"></param>
         /// <remarks>
         /// This method will be called on a thread designated for the application by the host.
         /// </remarks>
-        Task Start();
+        Task Start(InitialisationInformation initialisationInformation);
 
         Task Stop();
     }
