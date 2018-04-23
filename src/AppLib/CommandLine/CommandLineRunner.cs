@@ -6,6 +6,9 @@ using AppLib.Initialisation;
 
 namespace AppLib.CommandLine
 {
+    /// <summary>
+    /// Runs an application with support for configuration from the command line
+    /// </summary>
     public static class CommandLineRunner
     {
         public static async Task<int> Run<TCommandLineBinding>(string[] args) where TCommandLineBinding : ICommandLineBinding, new()

@@ -6,6 +6,11 @@ using CommandLine;
 
 namespace AppLib.CommandLine
 {
+    /// <summary>
+    /// Given a set of options passed on the command line attempts to parse those arguments into a concrete type
+    /// using the CommandLineParser library
+    /// </summary>
+    /// <typeparam name="TCommandLine">Strongly typed representation of the command line</typeparam>
     internal class CommandLineParser<TCommandLine> : ICommandLineParser
     {
         public (ParseResult ParseResult, object CommandLine) Parse(string[] args, InitialisationInformation initialisationInformation)

@@ -2,6 +2,13 @@ using System;
 
 namespace AppLib.CommandLine
 {
+    /// <summary>
+    /// Assocaties a class representing arguments which can be passed on the command line to a
+    /// configuration class used to bootstrap an application
+    /// </summary>
+    /// <typeparam name="TCommandLine">Class representing the command line arguments</typeparam>
+    /// <typeparam name="TConfiguration">Type used to configure an application</typeparam>
+    /// <typeparam name="TBootstrapper">Class which uses the configuration to bootstrap an application</typeparam>
     public class CommandLineBinding<TCommandLine, TConfiguration, TBootstrapper> : ICommandLineBinding<TCommandLine> where TBootstrapper : IBootstrapper where TCommandLine : ICommandLineConfigurator<TConfiguration>, new()
     {
         private readonly Func<TConfiguration, TBootstrapper> _bootstrapperFactory;

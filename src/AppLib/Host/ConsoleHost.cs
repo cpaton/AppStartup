@@ -5,6 +5,11 @@ using AppLib.Initialisation;
 
 namespace AppLib.Host
 {
+    /// <summary>
+    /// Runs an application from a console application.
+    /// Application is started and the program doesn't return to the caller until the enter key is pressed.
+    /// When enter is pressed the application is told to shutdown and the program exits
+    /// </summary>
     public class ConsoleHost
     {
         public async Task<StatusCode> Run(IApplication application, InitialisationInformation initialisationInformation)

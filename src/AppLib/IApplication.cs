@@ -3,6 +3,9 @@ using AppLib.Initialisation;
 
 namespace AppLib
 {
+    /// <summary>
+    /// Represents a logical unit that provides a cohesive set of functionality
+    /// </summary>
     public interface IApplication
     {
         /// <summary>
