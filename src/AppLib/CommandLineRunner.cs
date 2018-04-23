@@ -1,11 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AppLib.Host;
 using AppLib.Initialisation;
-using CommandLine;
 
 namespace AppLib
 {
@@ -22,40 +19,27 @@ namespace AppLib
             initialisationInformation.AddMessage(MessageType.Information, $"Received command line {string.Join(" ", args.Select(x => $"[{x}]"))}");
             var consoleHost = new ConsoleHost();
 
-            object commandLine = null;
+            var parserType = typeof(CommandLineParser<>).MakeGenericType(commandLineBinding.CommandLineType);
+            var commandLineParser = (ICommandLineParser)Activator.CreateInstance(parserType);
 
-            var stringBuilder = new StringBuilder();
-            using (var writer = new StringWriter(stringBuilder))
-            using (var parser = new Parser(x =>
-                                {
-                                    x.IgnoreUnknownArguments = true;
-                                    x.HelpWriter = writer;
-                                }))
+            var parseResult = commandLineParser.Parse(args, initialisationInformation);
+
+            switch (parseResult.ParseResult)
             {
-                var parserResult = parser.ParseArguments(args, commandLineBinding.CommandLineType);
-
-                if (parserResult.Tag != ParserResultType.Parsed)
-                {
-                    initialisationInformation.AddMessage(MessageType.Error, "Failed to parse command line arguments");
-                    initialisationInformation.AddMessage(MessageType.Information, stringBuilder.ToString());
-                    consoleHost.ReportInitialisationError(initialisationInformation);
+                case ParseResult.Failed:
+                    consoleHost.ReportInitialisation(initialisationInformation);
                     return -1;
-                }
+                case ParseResult.SuccessfulAndExit:
+                    consoleHost.ReportInitialisation(initialisationInformation);
+                    return 0;
+                default:
+                    var applicationBootstrapper = commandLineBinding.CreateBootstrapper(parseResult.CommandLine);
+                    var application = applicationBootstrapper.Bootstrap();
 
-                parserResult.WithParsed(parsedCommandLine =>
-                {
-                    commandLine = parsedCommandLine;
-                    var formatCommandLine = parser.FormatCommandLine(commandLine);
-                    initialisationInformation.AddMessage(MessageType.Information, $"Command line interpreted as {Environment.NewLine}{formatCommandLine}");
-                });
+                    var returnCode = await consoleHost.Run(application, initialisationInformation);
+
+                    return (int) returnCode;
             }
-
-            var applicationBootstrapper = commandLineBinding.CreateBootstrapper(commandLine);
-            var application = applicationBootstrapper.Bootstrap();
-
-            var returnCode = await consoleHost.Run(application, initialisationInformation);
-
-            return (int) returnCode;
         }
     }
 }

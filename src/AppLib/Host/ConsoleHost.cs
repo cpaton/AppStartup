@@ -52,7 +52,7 @@ namespace AppLib.Host
             return StatusCode.Success;
         }
 
-        public void ReportInitialisationError(IInitialisationInformation initialisationInformation)
+        public void ReportInitialisation(IInitialisationInformation initialisationInformation)
         {
             foreach (var initialisationInformationMessage in initialisationInformation.Messages)
             {
