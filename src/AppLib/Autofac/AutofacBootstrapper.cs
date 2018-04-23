@@ -4,6 +4,8 @@ using System.Reflection;
 using Autofac;
 using log4net;
 using log4net.Config;
+using log4net.Core;
+using log4net.Repository.Hierarchy;
 
 namespace AppLib.Autofac
 {
@@ -31,7 +33,7 @@ namespace AppLib.Autofac
         protected abstract void ConfigureLogging(ContainerBuilder containerBuilder);
         protected abstract void BuildContainer(ContainerBuilder containerBuilder);
 
-        protected void RegisterLog4Net(ContainerBuilder containerBuilder, string log4NetConfigFilePath = "log4net.config")
+        protected void RegisterLog4Net(ContainerBuilder containerBuilder, string log4NetConfigFilePath = "log4net.config", bool debugLogging = false)
         {
             var repositoryAssembly = typeof(TApplication).Assembly;
             containerBuilder.RegisterModule<LoggingModule>();
@@ -51,6 +53,15 @@ namespace AppLib.Autofac
             var log4NetConfigFileInfo = new FileInfo(log4NetConfigFilePath);
             var loggerRepository = LogManager.GetRepository(repositoryAssembly);
             XmlConfigurator.ConfigureAndWatch(loggerRepository, log4NetConfigFileInfo);
+
+            if (debugLogging)
+            {
+                if (loggerRepository is Hierarchy hierarchy)
+                {
+                    hierarchy.Root.Level = Level.Finest;
+                    hierarchy.RaiseConfigurationChanged(EventArgs.Empty);
+                }
+            }
         }
     }
 }

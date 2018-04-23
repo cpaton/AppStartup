@@ -14,7 +14,7 @@ namespace SampleApp.Red
 
         protected override void ConfigureLogging(ContainerBuilder containerBuilder)
         {
-            RegisterLog4Net(containerBuilder);
+            RegisterLog4Net(containerBuilder, debugLogging: Configuration.Verbose);
         }
 
         protected override void BuildContainer(ContainerBuilder containerBuilder)

@@ -33,7 +33,11 @@ namespace SampleApp.Red
                         break;
                 }
             }
-            ThreadPool.QueueUserWorkItem(_ => _log.Info(_configuration.Name));
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                _log.Debug("Debug logging enabled");
+                _log.Info(_configuration.Name);
+            });
             return Task.CompletedTask;
         }
 

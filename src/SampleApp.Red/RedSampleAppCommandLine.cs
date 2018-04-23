@@ -9,6 +9,9 @@ namespace SampleApp.Red
         [Option('n', "name", Default = "Default Name", HelpText = "Name parameter")]
         public string Name { get; set; } = "Default Value";
 
+        [Option('v', "verbose", HelpText = "Specify to turn on debug logging")]
+        public bool Verbose { get; set; }
+
         public IRedSampleAppConfiguration ToConfiguration()
         {
             return this;
