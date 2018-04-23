@@ -4,7 +4,7 @@ using System.Text;
 using AppLib.Initialisation;
 using CommandLine;
 
-namespace AppLib
+namespace AppLib.CommandLine
 {
     internal class CommandLineParser<TCommandLine> : ICommandLineParser
     {

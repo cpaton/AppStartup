@@ -1,4 +1,4 @@
-namespace AppLib
+namespace AppLib.CommandLine
 {
     public enum ParseResult
     {

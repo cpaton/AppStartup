@@ -1,6 +1,6 @@
 using AppLib.Initialisation;
 
-namespace AppLib
+namespace AppLib.CommandLine
 {
     internal interface ICommandLineParser
     {

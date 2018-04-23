@@ -1,6 +1,6 @@
 using System;
 
-namespace AppLib
+namespace AppLib.CommandLine
 {
     public interface ICommandLineBinding
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace AppLib
+namespace AppLib.CommandLine
 {
     public class CommandLineBinding<TCommandLine, TConfiguration, TBootstrapper> : ICommandLineBinding<TCommandLine> where TBootstrapper : IBootstrapper where TCommandLine : ICommandLineConfigurator<TConfiguration>, new()
     {

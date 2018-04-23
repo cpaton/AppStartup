@@ -1,4 +1,4 @@
-﻿using AppLib;
+﻿using AppLib.CommandLine;
 using CommandLine;
 
 namespace SampleApp.Red

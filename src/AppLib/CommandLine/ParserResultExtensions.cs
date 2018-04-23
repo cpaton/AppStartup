@@ -1,7 +1,7 @@
 using System.Linq;
 using CommandLine;
 
-namespace AppLib
+namespace AppLib.CommandLine
 {
     public static class ParserResultExtensions
     {

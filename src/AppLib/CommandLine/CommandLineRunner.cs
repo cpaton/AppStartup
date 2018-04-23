@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AppLib.Host;
 using AppLib.Initialisation;
 
-namespace AppLib
+namespace AppLib.CommandLine
 {
     public static class CommandLineRunner
     {
