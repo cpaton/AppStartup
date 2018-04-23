@@ -6,6 +6,13 @@ using AppLib.Initialisation;
 
 namespace AppLib.CommandLine
 {
+    public sealed class ReturnCodes
+    {
+        public const int Success = 0;
+        public const int CommandLineParsingFailed = -1;
+        public const int BoostrapFailed = -2;
+    }
+
     /// <summary>
     /// Runs an application with support for configuration from the command line
     /// </summary>
@@ -31,17 +38,28 @@ namespace AppLib.CommandLine
             {
                 case ParseResult.Failed:
                     consoleHost.ReportInitialisation(initialisationInformation);
-                    return -1;
+                    return ReturnCodes.CommandLineParsingFailed;
                 case ParseResult.SuccessfulAndExit:
                     consoleHost.ReportInitialisation(initialisationInformation);
-                    return 0;
+                    return ReturnCodes.Success;
                 default:
                     var applicationBootstrapper = commandLineBinding.CreateBootstrapper(parseResult.CommandLine);
-                    var application = applicationBootstrapper.Bootstrap();
+                    IApplication application = null;
+
+                    try
+                    {
+                        application = applicationBootstrapper.Bootstrap();
+                    }
+                    catch (Exception ex)
+                    {
+                        initialisationInformation.AddMessage(MessageType.Error, $"Failed to bootstrap{Environment.NewLine}{ex}");
+                        consoleHost.ReportInitialisation(initialisationInformation);
+                        return ReturnCodes.BoostrapFailed;
+                    }
 
                     var returnCode = await consoleHost.Run(application, initialisationInformation);
 
-                    return (int) returnCode;
+                    return (int)returnCode;
             }
         }
     }

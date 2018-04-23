@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Text;
 using AppLib.Initialisation;
@@ -44,8 +43,7 @@ namespace AppLib.CommandLine
                 {
                     commandLine = parsedCommandLine;
                     var formatCommandLine = parser.FormatCommandLine(commandLine);
-                    initialisationInformation.AddMessage(MessageType.Information,
-                                                          $"Command line interpreted as {Environment.NewLine}{formatCommandLine}");
+                    initialisationInformation.AddMessage(MessageType.Information, $"Command line interpreted as [{formatCommandLine}]");
                 });
                 return (ParseResult.Successful, commandLine);
             }

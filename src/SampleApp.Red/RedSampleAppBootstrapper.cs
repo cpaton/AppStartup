@@ -1,8 +1,9 @@
-using AppLib;
+using AppLib.Autofac;
+using Autofac;
 
 namespace SampleApp.Red
 {
-    public class RedSampleAppBootstrapper : IBootstrapper
+    public class RedSampleAppBootstrapper : AutofacBootstrapper<RedSampleApp>
     {
         public RedSampleAppBootstrapper(IRedSampleAppConfiguration configuration)
         {
@@ -11,9 +12,14 @@ namespace SampleApp.Red
 
         private IRedSampleAppConfiguration Configuration { get; }
 
-        public IApplication Bootstrap()
+        protected override void ConfigureLogging(ContainerBuilder containerBuilder)
         {
-            return new RedSampleApp(Configuration);
+            RegisterLog4Net(containerBuilder);
+        }
+
+        protected override void BuildContainer(ContainerBuilder containerBuilder)
+        {
+            containerBuilder.RegisterInstance(Configuration).As<IRedSampleAppConfiguration>();
         }
     }
 }
